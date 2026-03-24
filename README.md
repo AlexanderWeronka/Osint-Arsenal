@@ -2,7 +2,7 @@
 
 A curated collection of OSINT tools and resources, built as a fast static web app.
 
-**Live:** https://alexanderweronka.github.io/Osint-Arsenal/index.html
+**Live:** https://alexanderweronka.github.io/Osint-Arsenal
 ---
 
 ## Features
