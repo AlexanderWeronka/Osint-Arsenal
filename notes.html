@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📝 Заметки — OSINT Arsenal</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Syne:wght@400;600;800&display=swap');
+
+:root {
+  --bg:      #080b10;
+  --bg2:     #0e1219;
+  --bg3:     #151c26;
+  --bg4:     #1c2535;
+  --border:  #1e2d40;
+  --accent:  #00d4ff;
+  --accent2: #7fff6e;
+  --accent3: #ff4e6a;
+  --gold:    #ffd166;
+  --text:    #d8e8f0;
+  --text2:   #7a9ab0;
+  --text3:   #3a5570;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'IBM Plex Mono', monospace; background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+/* TOPBAR */
+.topbar { display: flex; align-items: center; gap: 14px; padding: 0 20px; height: 48px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; position: relative; }
+.topbar::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, var(--accent) 0%, transparent 60%); opacity: .35; }
+.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px; color: var(--accent); text-decoration: none; letter-spacing: .5px; }
+.logo span { color: var(--text2); font-weight: 400; }
+.topbar-sep { width: 1px; height: 22px; background: var(--border); }
+.tab-nav { display: flex; gap: 2px; }
+.tab-btn { padding: 6px 14px; border-radius: 5px; border: none; background: transparent; color: var(--text2); font-family: 'IBM Plex Mono', monospace; font-size: 12px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: color .2s, background .2s; }
+.tab-btn:hover { color: var(--text); background: var(--bg3); }
+.tab-btn.active { color: var(--accent); background: rgba(0,212,255,.08); }
+.topbar-right { margin-left: auto; display: flex; gap: 8px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 13px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg3); color: var(--text2); font-family: 'IBM Plex Mono', monospace; font-size: 11px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+.btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,212,255,.06); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
+.btn.primary:hover { opacity: .85; color: #000; }
+.btn.link-active { background: rgba(0,212,255,.15); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 14px rgba(0,212,255,.2); }
+.btn.link-step2 { background: rgba(255,209,102,.15); border-color: var(--gold); color: var(--gold); box-shadow: 0 0 14px rgba(255,209,102,.2); }
+
+/* WORKSPACE */
+.workspace { display: grid; grid-template-columns: 220px 1fr 290px; flex: 1; overflow: hidden; }
+
+/* SIDEBAR */
+.sidebar { background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+.sb-search { padding: 10px; border-bottom: 1px solid var(--border); }
+.sb-search input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 7px 10px; color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 11px; outline: none; transition: border-color .2s; }
+.sb-search input:focus { border-color: var(--accent); }
+.sb-sec { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); padding: 10px 12px 6px; }
+.note-list { flex: 1; overflow-y: auto; }
+.ni { padding: 9px 12px; cursor: pointer; border-left: 2px solid transparent; transition: all .15s; }
+.ni:hover { background: var(--bg3); border-left-color: var(--border); }
+.ni.active { background: rgba(0,212,255,.07); border-left-color: var(--accent); }
+.ni-t { font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+.ni-m { font-size: 10px; color: var(--text3); display: flex; gap: 6px; flex-wrap: wrap; }
+.ni-tag { color: var(--accent); font-size: 9px; }
+.sb-foot { padding: 10px; border-top: 1px solid var(--border); }
+
+/* CENTER */
+.center-panel { display: flex; flex-direction: column; overflow: hidden; }
+.view-bar { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: var(--bg2); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.tgl-group { display: flex; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+.tgl { padding: 5px 13px; background: transparent; border: none; color: var(--text2); font-family: 'IBM Plex Mono', monospace; font-size: 11px; cursor: pointer; transition: all .2s; }
+.tgl:hover { color: var(--text); background: var(--bg3); }
+.tgl.active { background: var(--accent); color: #000; font-weight: 600; }
+.note-name { margin-left: auto; font-size: 11px; color: var(--text3); }
+.note-name span { color: var(--accent); }
+
+/* EDITOR */
+.editor-wrap { flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 18px; gap: 10px; }
+.empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; color: var(--text3); }
+.empty-state .ei { font-size: 44px; opacity: .3; }
+.empty-state p { font-size: 12px; }
+.editor-inner { display: flex; flex-direction: column; gap: 10px; flex: 1; overflow: hidden; }
+.ed-title { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--text); padding: 6px 0; outline: none; width: 100%; transition: border-color .2s; }
+.ed-title:focus { border-bottom-color: var(--accent); }
+.tag-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.tag-chip { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: rgba(0,212,255,.1); color: var(--accent); border: 1px solid rgba(0,212,255,.2); cursor: pointer; }
+.tag-chip:hover { background: rgba(255,78,106,.1); color: var(--accent3); border-color: rgba(255,78,106,.2); }
+.tag-inp { background: transparent; border: 1px dashed var(--border); border-radius: 20px; padding: 2px 8px; color: var(--text2); font-family: 'IBM Plex Mono', monospace; font-size: 10px; outline: none; width: 90px; transition: all .2s; }
+.tag-inp:focus { border-color: var(--accent); color: var(--text); width: 130px; }
+.ed-body { flex: 1; background: transparent; border: none; color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.9; resize: none; outline: none; overflow-y: auto; }
+.ed-body::placeholder { color: var(--text3); }
+.links-bar { padding: 7px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--text3); flex-wrap: wrap; }
+.lchip { font-size: 10px; padding: 2px 8px; border-radius: 4px; background: rgba(127,255,110,.08); color: var(--accent2); border: 1px solid rgba(127,255,110,.2); cursor: pointer; }
+.lchip:hover { background: rgba(255,78,106,.08); color: var(--accent3); }
+
+/* PREVIEW */
+.preview-wrap { flex: 1; overflow-y: auto; padding: 28px 32px; font-size: 13px; line-height: 1.9; }
+.preview-wrap h1 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 16px; color: var(--text); }
+.preview-wrap h2 { font-size: 15px; color: var(--accent); margin: 18px 0 8px; font-family: 'Syne', sans-serif; }
+.preview-wrap h3 { font-size: 13px; color: var(--accent2); margin: 12px 0 6px; }
+.preview-wrap p { color: var(--text2); margin-bottom: 10px; }
+.preview-wrap code { background: var(--bg3); padding: 1px 5px; border-radius: 3px; color: var(--accent2); }
+.preview-wrap pre { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 14px; overflow-x: auto; margin: 12px 0; }
+.preview-wrap ul, .preview-wrap ol { padding-left: 20px; color: var(--text2); }
+.preview-wrap li { margin-bottom: 4px; }
+.preview-wrap strong { color: var(--text); }
+.preview-wrap em { color: var(--gold); }
+.preview-wrap blockquote { border-left: 3px solid var(--accent); padding-left: 14px; color: var(--text2); margin: 10px 0; }
+.preview-wrap a { color: var(--accent2); text-decoration: none; }
+.preview-wrap a:hover { text-decoration: underline; }
+.preview-wrap hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+/* GRAPH */
+#graph-canvas { width: 100%; height: 100%; cursor: grab; display: block; }
+#graph-canvas:active { cursor: grabbing; }
+#graph-canvas.link-cur { cursor: crosshair !important; }
+.graph-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text3); font-size: 13px; gap: 12px; }
+.graph-empty .big { font-size: 40px; }
+
+/* RIGHT */
+.right-panel { background: var(--bg2); border-left: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+.phdr { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); padding: 11px 14px; border-bottom: 1px solid var(--border); }
+.mini-wrap { flex: 0 0 190px; border-bottom: 1px solid var(--border); overflow: hidden; }
+#mini-canvas { width: 100%; height: 100%; display: block; }
+.info-block { padding: 12px 14px; border-bottom: 1px solid var(--border); }
+.irow { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; }
+.il { color: var(--text3); } .iv { color: var(--text); }
+.backlinks { flex: 1; overflow-y: auto; }
+.bl-item { padding: 8px 14px; font-size: 11px; cursor: pointer; color: var(--text2); border-left: 2px solid transparent; transition: all .15s; }
+.bl-item:hover { color: var(--accent2); border-left-color: var(--accent2); background: var(--bg3); }
+.export-panel { padding: 12px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 7px; }
+.elbl { font-size: 9px; color: var(--text3); letter-spacing: 1.5px; text-transform: uppercase; }
+
+/* MODAL */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(6px); }
+.overlay.open { display: flex; }
+.modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 380px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 24px 60px rgba(0,0,0,.6); }
+.modal h3 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+.modal input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 9px 12px; color: var(--text); font-family: 'IBM Plex Mono', monospace; font-size: 12px; outline: none; transition: border-color .2s; }
+.modal input:focus { border-color: var(--accent); }
+.modal-acts { display: flex; gap: 8px; justify-content: flex-end; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 22px; right: 22px; background: var(--bg3); border: 1px solid var(--accent); color: var(--text); padding: 9px 16px; border-radius: 6px; font-size: 11px; opacity: 0; transform: translateY(8px); transition: all .28s; z-index: 9999; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="logo" href="./index.html">🔭 OSINT <span>Arsenal</span></a>
+  <div class="topbar-sep"></div>
+  <nav class="tab-nav">
+    <a class="tab-btn" href="./index.html">🛠 Инструменты</a>
+    <a class="tab-btn active" href="#">📝 Заметки</a>
+  </nav>
+  <div class="topbar-right">
+    <button class="btn" onclick="exportAllMd()">⬇ Экспорт .zip</button>
+    <button class="btn primary" onclick="openModal()">+ Заметка</button>
+  </div>
+</div>
+
+<div class="workspace">
+
+  <div class="sidebar">
+    <div class="sb-search">
+      <input type="text" id="search-input" placeholder="/ поиск..." oninput="renderList()">
+    </div>
+    <div class="sb-sec" id="list-count">0 заметок</div>
+    <div class="note-list" id="note-list"></div>
+    <div class="sb-foot">
+      <button class="btn" style="width:100%;justify-content:center;" onclick="openModal()">+ Создать</button>
+    </div>
+  </div>
+
+  <div class="center-panel">
+    <div class="view-bar">
+      <div class="tgl-group">
+        <button class="tgl active" id="btn-edit"    onclick="setView('edit')">✏ Редактор</button>
+        <button class="tgl"        id="btn-preview" onclick="setView('preview')">👁 Просмотр</button>
+        <button class="tgl"        id="btn-graph"   onclick="setView('graph')">🕸 Граф</button>
+      </div>
+      <button class="btn hidden" id="btn-link-mode" onclick="toggleLinkMode()">🔗 Режим связи</button>
+      <div class="note-name"><span id="active-name">— выберите заметку —</span></div>
+    </div>
+
+    <div class="editor-wrap" id="view-edit">
+      <div class="empty-state" id="empty-hint">
+        <div class="ei">📄</div>
+        <p>Выберите заметку или создайте новую</p>
+        <button class="btn primary" onclick="openModal()">+ Создать</button>
+      </div>
+      <div class="editor-inner hidden" id="editor-inner">
+        <input class="ed-title" id="note-title" placeholder="Заголовок..." oninput="autoSave()">
+        <div class="tag-row" id="tag-row"></div>
+        <textarea class="ed-body" id="note-body" placeholder="Markdown... [[связать с заметкой]]" oninput="autoSave();detectLinks()"></textarea>
+      </div>
+    </div>
+
+    <div class="preview-wrap hidden" id="view-preview"></div>
+
+    <div class="hidden" id="view-graph" style="flex:1;position:relative;overflow:hidden;">
+      <canvas id="graph-canvas"></canvas>
+      <div class="graph-empty hidden" id="graph-empty">
+        <div class="big">🕸</div>
+        <p>Создайте заметки и свяжите через <code>[[название]]</code></p>
+      </div>
+    </div>
+
+    <div class="links-bar hidden" id="links-bar">
+      <span>🔗</span><span id="links-chips"></span>
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="phdr">Локальный граф</div>
+    <div class="mini-wrap"><canvas id="mini-canvas"></canvas></div>
+    <div class="info-block">
+      <div class="irow"><span class="il">Заметок</span><span class="iv" id="s-notes">0</span></div>
+      <div class="irow"><span class="il">Связей</span><span class="iv" id="s-links">0</span></div>
+      <div class="irow"><span class="il">Тегов</span><span class="iv" id="s-tags">0</span></div>
+      <div class="irow"><span class="il">Изменено</span><span class="iv" id="s-date">—</span></div>
+    </div>
+    <div class="phdr">Обратные ссылки</div>
+    <div class="backlinks" id="backlinks"></div>
+    <div class="export-panel">
+      <div class="elbl">Экспорт</div>
+      <button class="btn" onclick="exportOne()">⬇ Эта заметка (.md)</button>
+      <button class="btn" onclick="exportAllMd()">⬇ Все заметки (.zip)</button>
+      <button class="btn" style="color:var(--accent3)" onclick="deleteNote()">🗑 Удалить</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="modal">
+  <div class="modal">
+    <h3>📝 Новая заметка</h3>
+    <input type="text" id="new-title" placeholder="Название...">
+    <div class="modal-acts">
+      <button class="btn" onclick="closeModal()">Отмена</button>
+      <button class="btn primary" onclick="createNote()">Создать</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SK = 'osint_notes_v3';
+let notes = JSON.parse(localStorage.getItem(SK) || '[]');
+let activeId = null, saveTimer = null, currentView = 'edit';
+let gNodes = [], gEdges = [], drag = null, panX = 0, panY = 0, zoom = 1, simTimer = null;
+let linkMode = false, linkFirst = null, mouseWorld = {x:0,y:0};
+
+function uid() { return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+function persist() { localStorage.setItem(SK, JSON.stringify(notes)); }
+function toast(msg, col) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.borderColor = col||'var(--accent)';
+  t.classList.add('show'); clearTimeout(t._t);
+  t._t = setTimeout(()=>t.classList.remove('show'), 2400);
+}
+function fmt(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('ru',{day:'2-digit',month:'short'})+' '+
+         new Date(d).toLocaleTimeString('ru',{hour:'2-digit',minute:'2-digit'});
+}
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// CRUD
+function createNote() {
+  const title = document.getElementById('new-title').value.trim()||'Без названия';
+  const n = {id:uid(),title,body:'',tags:[],created:Date.now(),updated:Date.now()};
+  notes.unshift(n); persist(); closeModal(); renderList(); selectNote(n.id);
+  toast('✅ Создано');
+}
+function selectNote(id) {
+  activeId = id;
+  const n = notes.find(x=>x.id===id); if (!n) return;
+  document.getElementById('empty-hint').classList.add('hidden');
+  const ei = document.getElementById('editor-inner');
+  ei.classList.remove('hidden'); ei.style.display='flex';
+  document.getElementById('note-title').value = n.title;
+  document.getElementById('note-body').value  = n.body;
+  document.getElementById('active-name').textContent = n.title;
+  renderTags(); detectLinks(); updateStats(); renderBacklinks(); renderList(); updateMini();
+  if (currentView==='preview') renderPreview();
+  if (currentView==='graph') drawGraph();
+}
+function autoSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{
+    const n = notes.find(x=>x.id===activeId); if (!n) return;
+    n.title = document.getElementById('note-title').value||'Без названия';
+    n.body  = document.getElementById('note-body').value;
+    n.updated = Date.now(); persist();
+    renderList(); updateStats(); renderBacklinks(); updateMini();
+    document.getElementById('active-name').textContent = n.title;
+    if (currentView==='graph') drawGraph();
+  }, 600);
+}
+function deleteNote() {
+  if (!activeId||!confirm('Удалить?')) return;
+  notes = notes.filter(n=>n.id!==activeId); persist(); activeId=null;
+  document.getElementById('empty-hint').classList.remove('hidden');
+  document.getElementById('editor-inner').classList.add('hidden');
+  renderList(); updateStats(); drawGraph(); updateMini();
+  toast('🗑 Удалено','var(--accent3)');
+}
+
+// TAGS
+function renderTags() {
+  const n=notes.find(x=>x.id===activeId); if (!n) return;
+  const row=document.getElementById('tag-row'); row.innerHTML='';
+  (n.tags||[]).forEach(t=>{
+    const c=document.createElement('span'); c.className='tag-chip';
+    c.innerHTML=`#${t} <span onclick="removeTag('${t}')">×</span>`; row.appendChild(c);
+  });
+  const inp=document.createElement('input'); inp.className='tag-inp'; inp.placeholder='+ тег';
+  inp.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===','){
+      e.preventDefault();
+      const v=inp.value.replace(/[,#\s]/g,'').trim(); if(v) addTag(v); inp.value='';
+    }
+  };
+  row.appendChild(inp);
+}
+function addTag(t) {
+  const n=notes.find(x=>x.id===activeId); if(!n||n.tags.includes(t)) return;
+  n.tags.push(t); persist(); renderTags(); updateStats();
+}
+function removeTag(t) {
+  const n=notes.find(x=>x.id===activeId); if(!n) return;
+  n.tags=n.tags.filter(x=>x!==t); persist(); renderTags(); updateStats();
+}
+
+// LINKS
+function getLinks(body) {
+  const rx=/\[\[([^\]]+)\]\]/g, res=[], seen=new Set(); let m;
+  while((m=rx.exec(body||''))!==null){const name=m[1].trim();if(!seen.has(name)){res.push(name);seen.add(name);}}
+  return res;
+}
+function detectLinks() {
+  const n=notes.find(x=>x.id===activeId); if(!n) return;
+  const links=getLinks(n.body), bar=document.getElementById('links-bar');
+  if(!links.length){bar.classList.add('hidden');return;}
+  bar.classList.remove('hidden');
+  const chips=document.getElementById('links-chips'); chips.innerHTML='';
+  links.forEach(name=>{
+    const c=document.createElement('span'); c.className='lchip';
+    c.textContent='[['+name+']]';
+    const t=notes.find(x=>x.title.toLowerCase()===name.toLowerCase());
+    if(t) c.onclick=()=>selectNote(t.id); else{c.style.opacity='.4';c.title='не найдено';}
+    chips.appendChild(c);
+  });
+}
+
+// LIST
+function renderList() {
+  const q=document.getElementById('search-input').value.toLowerCase();
+  const list=document.getElementById('note-list'); list.innerHTML='';
+  const f=notes.filter(n=>n.title.toLowerCase().includes(q)||(n.body||'').toLowerCase().includes(q)||(n.tags||[]).some(t=>t.includes(q)));
+  document.getElementById('list-count').textContent=f.length+' заметок';
+  f.forEach(n=>{
+    const el=document.createElement('div'); el.className='ni'+(n.id===activeId?' active':''); el.onclick=()=>selectNote(n.id);
+    const tags=(n.tags||[]).slice(0,2).map(t=>`<span class="ni-tag">#${t}</span>`).join('');
+    el.innerHTML=`<div class="ni-t">${n.title}</div><div class="ni-m"><span>${fmt(n.updated)}</span>${tags}</div>`;
+    list.appendChild(el);
+  });
+}
+
+// STATS
+function updateStats() {
+  document.getElementById('s-notes').textContent=notes.length;
+  let lc=0; notes.forEach(n=>lc+=getLinks(n.body).length);
+  document.getElementById('s-links').textContent=lc;
+  document.getElementById('s-tags').textContent=new Set(notes.flatMap(n=>n.tags||[])).size;
+  const n=notes.find(x=>x.id===activeId);
+  document.getElementById('s-date').textContent=n?fmt(n.updated):'—';
+}
+function renderBacklinks() {
+  const bl=document.getElementById('backlinks'); bl.innerHTML='';
+  if(!activeId) return;
+  const n=notes.find(x=>x.id===activeId); if(!n) return;
+  const refs=notes.filter(x=>x.id!==activeId&&getLinks(x.body).some(l=>l.toLowerCase()===n.title.toLowerCase()));
+  if(!refs.length){bl.innerHTML='<div style="padding:10px 14px;font-size:10px;color:var(--text3)">Нет обратных ссылок</div>';return;}
+  refs.forEach(r=>{
+    const el=document.createElement('div'); el.className='bl-item';
+    el.textContent='← '+r.title; el.onclick=()=>selectNote(r.id); bl.appendChild(el);
+  });
+}
+
+// VIEWS
+function setView(v) {
+  currentView=v;
+  ['edit','preview','graph'].forEach(x=>{
+    document.getElementById('view-'+x).classList.toggle('hidden',x!==v);
+    document.getElementById('btn-'+x).classList.toggle('active',x===v);
+  });
+  const lmb=document.getElementById('btn-link-mode');
+  if(v==='graph'){lmb.classList.remove('hidden');drawGraph();}
+  else{lmb.classList.add('hidden');if(linkMode)exitLinkMode();}
+  if(v==='preview') renderPreview();
+}
+function renderPreview() {
+  const n=notes.find(x=>x.id===activeId), w=document.getElementById('view-preview');
+  if(!n){w.innerHTML='<div style="color:var(--text3);padding:40px">Выберите заметку</div>';return;}
+  w.innerHTML='<h1>'+esc(n.title)+'</h1>'+md2html(n.body);
+}
+function md2html(s) {
+  if(!s) return '';
+  let h=esc(s);
+  h=h.replace(/```([\s\S]*?)```/g,'<pre><code>$1</code></pre>');
+  h=h.replace(/`([^`]+)`/g,'<code>$1</code>');
+  h=h.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^# (.+)$/gm,'<h2>$1</h2>');
+  h=h.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>');
+  h=h.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>').replace(/^---$/gm,'<hr>');
+  h=h.replace(/^- (.+)$/gm,'<li>$1</li>').replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>');
+  h=h.replace(/\[\[([^\]]+)\]\]/g,(_,name)=>{
+    const t=notes.find(n=>n.title.toLowerCase()===name.toLowerCase());
+    return t?`<a href="#" onclick="selectNote('${t.id}');setView('edit');return false">[[${name}]]</a>`:`<span style="color:var(--accent3)">[[${name}]]</span>`;
+  });
+  h=h.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,'<a href="$2" target="_blank">$1</a>');
+  h=h.split('\n\n').map(p=>p.startsWith('<')?p:`<p>${p.replace(/\n/g,'<br>')}</p>`).join('\n');
+  return h;
+}
+
+// GRAPH
+function buildGraph() {
+  const pm={}; gNodes.forEach(n=>pm[n.id]={x:n.x,y:n.y});
+  gNodes=notes.map(n=>({id:n.id,title:n.title,tags:n.tags||[],x:pm[n.id]?.x??(Math.random()*500+100),y:pm[n.id]?.y??(Math.random()*300+100),vx:0,vy:0}));
+  gEdges=[];
+  notes.forEach(n=>getLinks(n.body).forEach(name=>{
+    const t=notes.find(x=>x.title.toLowerCase()===name.toLowerCase());
+    if(t) gEdges.push({src:n.id,tgt:t.id});
+  }));
+}
+function simulate() {
+  const k=90,g=.015;
+  const cx=gNodes.reduce((s,n)=>s+n.x,0)/(gNodes.length||1);
+  const cy=gNodes.reduce((s,n)=>s+n.y,0)/(gNodes.length||1);
+  gNodes.forEach(a=>{
+    gNodes.forEach(b=>{if(a===b)return;const dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=k*k/d;a.vx+=dx/d*f*.1;a.vy+=dy/d*f*.1;});
+    a.vx+=(cx-a.x)*g;a.vy+=(cy-a.y)*g;
+  });
+  gEdges.forEach(e=>{
+    const a=gNodes.find(n=>n.id===e.src),b=gNodes.find(n=>n.id===e.tgt); if(!a||!b) return;
+    const dx=b.x-a.x,dy=b.y-a.y,d=Math.sqrt(dx*dx+dy*dy)||1,f=(d-k)*.05;
+    a.vx+=dx/d*f;a.vy+=dy/d*f;b.vx-=dx/d*f;b.vy-=dy/d*f;
+  });
+  gNodes.forEach(n=>{n.vx*=.72;n.vy*=.72;n.x+=n.vx;n.y+=n.vy;});
+}
+function paint(canvas) {
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // grid
+  ctx.save();
+  ctx.strokeStyle='rgba(30,45,64,.5)'; ctx.lineWidth=.5;
+  const gs=40*zoom,ox=panX%gs,oy=panY%gs;
+  for(let x=ox;x<canvas.width;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+  for(let y=oy;y<canvas.height;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+  ctx.restore();
+  ctx.save();
+  ctx.translate(panX,panY);
+  ctx.scale(zoom,zoom);
+  // edges
+  gEdges.forEach(e=>{
+    const a=gNodes.find(n=>n.id===e.src),b=gNodes.find(n=>n.id===e.tgt); if(!a||!b) return;
+    const gr=ctx.createLinearGradient(a.x,a.y,b.x,b.y);
+    gr.addColorStop(0,'rgba(0,212,255,.35)');gr.addColorStop(1,'rgba(127,255,110,.15)');
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+    ctx.strokeStyle=gr;ctx.lineWidth=1.5;ctx.stroke();
+  });
+  // link preview
+  if(linkMode&&linkFirst){
+    ctx.beginPath();ctx.moveTo(linkFirst.x,linkFirst.y);ctx.lineTo(mouseWorld.x,mouseWorld.y);
+    ctx.strokeStyle='rgba(255,209,102,.85)';ctx.lineWidth=2;ctx.setLineDash([7,5]);ctx.stroke();ctx.setLineDash([]);
+    ctx.beginPath();ctx.arc(linkFirst.x,linkFirst.y,20,0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,209,102,.3)';ctx.lineWidth=2;ctx.stroke();
+  }
+  // nodes
+  gNodes.forEach(n=>{
+    const isAct=n.id===activeId, isFirst=linkMode&&linkFirst&&n.id===linkFirst.id;
+    const r=isAct?13:9;
+    if(isAct||isFirst){
+      const gl=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,r*3);
+      gl.addColorStop(0,isFirst?'rgba(255,209,102,.2)':'rgba(0,212,255,.18)');gl.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.arc(n.x,n.y,r*3,0,Math.PI*2);ctx.fillStyle=gl;ctx.fill();
+    }
+    ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    if(isFirst){ctx.fillStyle='rgba(255,209,102,.9)';ctx.strokeStyle='#ffd166';}
+    else if(isAct){ctx.fillStyle='#00d4ff';ctx.strokeStyle='#00d4ff';}
+    else{ctx.fillStyle='#1c2535';ctx.strokeStyle='#7fff6e';}
+    ctx.lineWidth=isAct||isFirst?0:1.5;ctx.fill();ctx.stroke();
+    ctx.fillStyle=isAct||isFirst?'#000':'#7a9ab0';
+    ctx.font=(isAct||isFirst?'600 ':'')+'10px IBM Plex Mono,monospace';
+    ctx.textAlign='center';ctx.fillText(n.title.slice(0,16),n.x,n.y+r+12);
+  });
+  ctx.restore();
+}
+function drawGraph() {
+  const canvas=document.getElementById('graph-canvas'), wrap=document.getElementById('view-graph');
+  canvas.width=wrap.offsetWidth; canvas.height=wrap.offsetHeight;
+  if(!notes.length){document.getElementById('graph-empty').classList.remove('hidden');canvas.style.display='none';return;}
+  document.getElementById('graph-empty').classList.add('hidden');canvas.style.display='block';
+  buildGraph();
+  if(simTimer) clearInterval(simTimer);
+  let i=0; simTimer=setInterval(()=>{simulate();paint(canvas);if(++i>220)clearInterval(simTimer);},18);
+  paint(canvas); initInteraction(canvas);
+}
+function initInteraction(canvas) {
+  canvas.onmousemove=e=>{
+    const r=canvas.getBoundingClientRect();
+    mouseWorld={(x:(e.clientX-r.left-panX)/zoom),(y:(e.clientY-r.top-panY)/zoom)};
+    if(linkMode){paint(canvas);return;}
+    if(!drag) return;
+    if(drag.type==='node'){drag.node.x=mouseWorld.x-drag.ox;drag.node.y=mouseWorld.y-drag.oy;drag.moved=true;}
+    else{panX=e.clientX-drag.sx;panY=e.clientY-drag.sy;}
+    paint(canvas);
+  };
+  canvas.onmousedown=e=>{
+    if(e.button!==0) return;
+    const r=canvas.getBoundingClientRect();
+    const mx=(e.clientX-r.left-panX)/zoom,my=(e.clientY-r.top-panY)/zoom;
+    const hit=gNodes.find(n=>Math.hypot(n.x-mx,n.y-my)<16);
+    if(linkMode){
+      if(!hit) return;
+      if(!linkFirst){
+        linkFirst=hit;
+        const btn=document.getElementById('btn-link-mode');
+        btn.classList.add('link-step2');btn.textContent='🎯 Выбери цель...';
+        paint(canvas);
+      } else {
+        if(hit.id!==linkFirst.id) addLink(linkFirst,hit);
+        exitLinkMode(); paint(canvas);
+      }
+      return;
+    }
+    if(hit) drag={type:'node',node:hit,ox:mx-hit.x,oy:my-hit.y,moved:false};
+    else drag={type:'pan',sx:e.clientX-panX,sy:e.clientY-panY};
+  };
+  canvas.onmouseup=e=>{
+    if(linkMode) return;
+    const r=canvas.getBoundingClientRect();
+    const mx=(e.clientX-r.left-panX)/zoom,my=(e.clientY-r.top-panY)/zoom;
+    if(drag?.type==='node'&&!drag.moved){
+      const hit=gNodes.find(n=>Math.hypot(n.x-mx,n.y-my)<14);
+      if(hit){selectNote(hit.id);setView('edit');}
+    }
+    drag=null;
+  };
+  canvas.onwheel=e=>{e.preventDefault();zoom*=e.deltaY<0?1.1:.9;zoom=Math.max(.15,Math.min(5,zoom));paint(canvas);};
+}
+
+// LINK MODE
+function toggleLinkMode() {
+  if(linkMode){exitLinkMode();return;}
+  linkMode=true; linkFirst=null;
+  const btn=document.getElementById('btn-link-mode');
+  btn.classList.add('link-active');btn.textContent='🔗 Выбери источник...';
+  document.getElementById('graph-canvas').classList.add('link-cur');
+  toast('🔗 Кликни на первую ноду (источник)','var(--accent)');
+  paint(document.getElementById('graph-canvas'));
+}
+function exitLinkMode() {
+  linkMode=false;linkFirst=null;
+  const btn=document.getElementById('btn-link-mode');
+  btn.classList.remove('link-active','link-step2');btn.textContent='🔗 Режим связи';
+  document.getElementById('graph-canvas').classList.remove('link-cur');
+}
+function addLink(srcNode,tgtNode) {
+  const src=notes.find(n=>n.id===srcNode.id),tgt=notes.find(n=>n.id===tgtNode.id);
+  if(!src||!tgt) return;
+  if(getLinks(src.body).some(l=>l.toLowerCase()===tgt.title.toLowerCase())){toast('⚠️ Уже связаны','var(--gold)');return;}
+  src.body+=(src.body?'\n':'')+`[[${tgt.title}]]`;
+  src.updated=Date.now();persist();buildGraph();
+  paint(document.getElementById('graph-canvas'));
+  updateStats();renderBacklinks();if(activeId===src.id)detectLinks();
+  toast(`✅ ${src.title} → ${tgt.title}`,'var(--accent2)');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&linkMode){exitLinkMode();paint(document.getElementById('graph-canvas'));}});
+
+// MINI
+function updateMini() {
+  const canvas=document.getElementById('mini-canvas'),wrap=document.querySelector('.mini-wrap');
+  canvas.width=wrap.offsetWidth;canvas.height=wrap.offsetHeight;
+  if(!notes.length) return;
+  buildGraph();for(let i=0;i<80;i++)simulate();
+  const xs=gNodes.map(n=>n.x),ys=gNodes.map(n=>n.y);
+  const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+  const s=Math.min(canvas.width/((maxX-minX)||1)*.8,canvas.height/((maxY-minY)||1)*.8,1);
+  const ox=(canvas.width-(maxX-minX)*s)/2,oy=(canvas.height-(maxY-minY)*s)/2;
+  const ctx=canvas.getContext('2d');ctx.clearRect(0,0,canvas.width,canvas.height);
+  gEdges.forEach(e=>{
+    const a=gNodes.find(n=>n.id===e.src),b=gNodes.find(n=>n.id===e.tgt);if(!a||!b)return;
+    ctx.beginPath();ctx.moveTo((a.x-minX)*s+ox,(a.y-minY)*s+oy);ctx.lineTo((b.x-minX)*s+ox,(b.y-minY)*s+oy);
+    ctx.strokeStyle='rgba(0,212,255,.2)';ctx.lineWidth=1;ctx.stroke();
+  });
+  gNodes.forEach(n=>{
+    const ia=n.id===activeId;
+    ctx.beginPath();ctx.arc((n.x-minX)*s+ox,(n.y-minY)*s+oy,ia?6:3.5,0,Math.PI*2);
+    ctx.fillStyle=ia?'#00d4ff':'#1c2535';ctx.strokeStyle=ia?'#00d4ff':'#7fff6e';ctx.lineWidth=1;ctx.fill();ctx.stroke();
+  });
+}
+
+// EXPORT
+function noteToMd(n) {
+  let s=`# ${n.title}\n\n`;
+  if(n.tags?.length) s+=`tags: ${n.tags.map(t=>'#'+t).join(' ')}\n\n`;
+  s+=`created: ${new Date(n.created).toISOString()}\nupdated: ${new Date(n.updated).toISOString()}\n\n---\n\n`;
+  return s+(n.body||'');
+}
+function safeName(t){return t.replace(/[\\/:*?"<>|]/g,'_').trim()||'note';}
+function dlText(name,content){const a=document.createElement('a');a.href='data:text/markdown;charset=utf-8,'+encodeURIComponent(content);a.download=name;a.click();}
+function exportOne(){const n=notes.find(x=>x.id===activeId);if(!n){toast('⚠️ Выберите заметку','var(--gold)');return;}dlText(safeName(n.title)+'.md',noteToMd(n));toast('✅ Скачано');}
+async function exportAllMd(){
+  if(!notes.length){toast('⚠️ Нет заметок','var(--gold)');return;}
+  try{const zip=new JSZip();notes.forEach(n=>zip.file(safeName(n.title)+'.md',noteToMd(n)));
+  const blob=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='osint-notes.zip';a.click();toast('✅ ZIP ('+notes.length+' заметок)');}
+  catch{toast('⚠️ Ошибка','var(--accent3)');}
+}
+
+// MODAL
+function openModal(){document.getElementById('modal').classList.add('open');setTimeout(()=>document.getElementById('new-title').focus(),50);}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.getElementById('new-title').value='';}
+document.getElementById('modal').onclick=e=>{if(e.target===e.currentTarget)closeModal();};
+document.getElementById('new-title').onkeydown=e=>{if(e.key==='Enter')createNote();};
+
+// INIT
+if(!notes.length){
+  const s1={id:uid(),title:'Добро пожаловать',body:'# OSINT Notes\n\nПиши в **Markdown**, связывай через [[двойные скобки]].\n\nВ режиме Граф нажми **🔗 Режим связи** — затем кликни две ноды.',tags:['старт'],created:Date.now(),updated:Date.now()};
+  const s2={id:uid(),title:'Инструменты OSINT',body:'## Сеть\n\n- Shodan\n- Censys\n\n[[Email разведка]]\n\n[[Добро пожаловать]]',tags:['инструменты'],created:Date.now()-86400000,updated:Date.now()-3600000};
+  const s3={id:uid(),title:'Email разведка',body:'- Hunter.io\n- theHarvester\n\n[[Инструменты OSINT]]',tags:['email'],created:Date.now()-172800000,updated:Date.now()-7200000};
+  notes=[s1,s2,s3];persist();
+}
+renderList();updateStats();selectNote(notes[0].id);
+</script>
+</body>
+</html>
