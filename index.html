@@ -3,16 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="OSINT Arsenal — подборка инструментов для разведки, пентеста и обучения">
+<meta name="author" content="digitalmole79, Alexander Lapshakov, Alexander Weronka">
 <title>OSINT Arsenal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Onest:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 <style>
-/* ── LANGUAGE SCREEN ── */
+/* LANGUAGE SCREEN */
 .lang-screen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:32px;animation:fadeUp .4s ease}
 .lang-screen.hidden{display:none}
 .lang-logo{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;letter-spacing:.2em;color:var(--accent);text-transform:uppercase;display:flex;align-items:center;gap:12px;margin-bottom:8px}
-.lang-logo-icon{width:44px;height:44px;background:var(--accent-dim);border:1.5px solid var(--accent);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;animation:rotateIcon 10s linear infinite}
+.lang-logo-icon{width:44px;height:44px;background:var(--accent-dim);border:1.5px solid var(--accent);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;font-family:'Space Mono',monospace}
 .lang-title{font-size:clamp(22px,4vw,34px);font-weight:800;letter-spacing:-.03em;text-align:center}
 .lang-sub{font-size:14px;color:var(--text-sub);text-align:center}
 .lang-btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
@@ -20,8 +22,7 @@
 .lang-btn span{font-size:11px;font-weight:400;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:.06em}
 .lang-btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
 .lang-btn.active{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
-
-/* ── SETTINGS MODAL ── */
+/* SETTINGS MODAL */
 .settings-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.78);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
 .settings-overlay.open{opacity:1;pointer-events:all}
 .settings-modal{background:var(--surface);border:1px solid var(--border2);border-radius:26px;max-width:460px;width:100%;padding:32px;transform:translateY(20px) scale(.97);transition:transform .35s cubic-bezier(.4,0,.2,1),background .4s}
@@ -36,8 +37,7 @@
 .set-btn{padding:10px 20px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-sub);transition:all .2s;font-family:'Onest',sans-serif}
 .set-btn:hover{border-color:var(--border2);color:var(--text)}
 .set-btn.active{background:var(--accent-dim);border-color:var(--accent);color:var(--accent)}
-
-/* ── SUPPORT MODAL ── */
+/* SUPPORT MODAL */
 .support-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.78);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s}
 .support-overlay.open{opacity:1;pointer-events:all}
 .support-modal{background:var(--surface);border:1px solid var(--border2);border-radius:26px;max-width:480px;width:100%;padding:32px;transform:translateY(20px) scale(.97);transition:transform .35s cubic-bezier(.4,0,.2,1)}
@@ -47,98 +47,83 @@
 .support-sub{font-size:13px;color:var(--text-sub);margin-bottom:24px;line-height:1.6}
 .wallet-card{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:12px}
 .wallet-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.wallet-icon{font-size:22px}
+.wallet-icon{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-dim);border:1px solid var(--border2);padding:4px 8px;border-radius:8px}
 .wallet-name{font-size:14px;font-weight:700}
 .wallet-net{font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);padding:2px 8px;background:var(--pill-bg);border-radius:8px}
 .wallet-addr{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-sub);word-break:break-all;line-height:1.6;background:var(--surface3);border-radius:10px;padding:10px 12px;cursor:pointer;transition:all .2s;border:1px solid var(--border)}
 .wallet-addr:hover{border-color:var(--accent);color:var(--accent)}
 .wallet-copy{font-size:10px;color:var(--text-muted);margin-top:6px;text-align:right;font-family:'Space Mono',monospace}
 .support-or{text-align:center;color:var(--text-muted);font-size:13px;margin:16px 0}
-.support-check{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;align-items:center;gap:12px}
+.support-check{background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:16px}
 .support-check-text{font-size:13px;color:var(--text-sub);line-height:1.6}
 .support-check-link{color:var(--accent);font-weight:700;text-decoration:none}
 .support-check-link:hover{text-decoration:underline}
-
-/* ── HEADER CREDIT ── */
+/* HEADER */
 .header-credit{font-family:'Space Mono',monospace;font-size:10px;color:var(--text-muted);letter-spacing:.04em;display:flex;align-items:center;gap:6px}
 .header-credit a{color:var(--accent);text-decoration:none;font-weight:700}
 .header-credit a:hover{text-decoration:underline}
-.header-actions{display:flex;align-items:center;gap:8px}
 .icon-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:24px;cursor:pointer;font-family:'Space Mono',monospace;font-size:10px;color:var(--text-sub);letter-spacing:.06em;transition:all .25s;white-space:nowrap}
 .icon-btn:hover{border-color:var(--accent);color:var(--accent)}
-.icon-btn .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
-
-/* ── PAGE TRANSITION ── */
+/* PAGE TRANSITION */
 .page{display:none;padding:clamp(24px,4vw,52px) clamp(16px,4vw,44px) 80px}
 .page.active{display:block;animation:pageIn .35s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes pageIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── INFO CARDS ── */
+/* INFO BODY */
 .info-body p{margin-bottom:14px;line-height:1.8}
 .info-body p:last-child{margin-bottom:0}
-
-/* ── MINECRAFT MODE ── */
 </style>
 </head>
 <body>
 
-<!-- LANGUAGE SCREEN -->
 <div class="lang-screen" id="langScreen">
   <div class="lang-logo">
-    <div class="lang-logo-icon">🔭</div>
+    <div class="lang-logo-icon">OA</div>
     OSINT Arsenal
   </div>
   <div>
     <div class="lang-title" id="langTitle">Choose your language</div>
-    <div class="lang-sub" id="langSubtitle" style="margin-top:8px">Выберите язык / Choose language</div>
+    <div class="lang-sub" style="margin-top:8px">Выберите язык / Choose language</div>
   </div>
   <div class="lang-btns">
-    <button class="lang-btn" onclick="setLang('ru')">🇷🇺 Русский<span>RUSSIAN</span></button>
-    <button class="lang-btn" onclick="setLang('en')">🇬🇧 English<span>ENGLISH</span></button>
+    <button class="lang-btn" onclick="setLang('ru')">Русский<span>RU</span></button>
+    <button class="lang-btn" onclick="setLang('en')">English<span>EN</span></button>
   </div>
 </div>
 
-<!-- SETTINGS MODAL -->
 <div class="settings-overlay" id="settingsOverlay">
   <div class="settings-modal">
     <div class="settings-head">
-      <div class="settings-title" id="settTitle">⚙️ Настройки</div>
-      <button class="settings-close" onclick="closeSettings()">✕</button>
+      <div class="settings-title" id="settTitle">Настройки</div>
+      <button class="settings-close" onclick="closeSettings()" aria-label="Закрыть">&times;</button>
     </div>
     <div class="settings-section">
       <div class="settings-label" id="settLangLabel">Язык</div>
       <div class="settings-row">
-        <button class="set-btn" id="btnLangRu" onclick="setLang('ru',true)">🇷🇺 Русский</button>
-        <button class="set-btn" id="btnLangEn" onclick="setLang('en',true)">🇬🇧 English</button>
+        <button class="set-btn" id="btnLangRu" onclick="setLang('ru',true)">Русский</button>
+        <button class="set-btn" id="btnLangEn" onclick="setLang('en',true)">English</button>
       </div>
     </div>
     <div class="settings-section">
       <div class="settings-label" id="settThemeLabel">Тема</div>
       <div class="settings-row">
-        <button class="set-btn" id="btnDark" onclick="setTheme('dark')">🌑 Dark</button>
-        <button class="set-btn" id="btnLight" onclick="setTheme('light')">☀️ Light</button>
-      </div>
-    </div>
-    <div class="settings-section">
-      <div class="settings-label">Secret Mode</div>
-      <div class="settings-row">
+        <button class="set-btn" id="btnDark" onclick="setTheme('dark')">Dark</button>
+        <button class="set-btn" id="btnLight" onclick="setTheme('light')">Light</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SUPPORT MODAL -->
 <div class="support-overlay" id="supportOverlay">
   <div class="support-modal">
     <div class="support-head">
-      <div class="support-title" id="suppTitle">💎 Поддержка</div>
-      <button class="settings-close" onclick="closeSupport()">✕</button>
+      <div class="support-title" id="suppTitle">Поддержка</div>
+      <button class="settings-close" onclick="closeSupport()" aria-label="Закрыть">&times;</button>
     </div>
     <div class="support-sub" id="suppSub">Если проект оказался полезным — можно поддержать авторов криптовалютой в сети TON:</div>
     <div class="wallet-card">
       <div class="wallet-top">
-        <div class="wallet-icon">💎</div>
-        <div class="wallet-name">TON — @Alexander_Weronka</div>
+        <div class="wallet-icon">TON</div>
+        <div class="wallet-name">@Alexander_Weronka</div>
         <div class="wallet-net">TON Network</div>
       </div>
       <div class="wallet-addr" onclick="copyWallet(this,'UQAIg6HtGmUyx6O_rMIpkk7M1bkLasdTtAevRV9Xo4iaU4Fv')">UQAIg6HtGmUyx6O_rMIpkk7M1bkLasdTtAevRV9Xo4iaU4Fv</div>
@@ -146,249 +131,361 @@
     </div>
     <div class="wallet-card">
       <div class="wallet-top">
-        <div class="wallet-icon">💎</div>
-        <div class="wallet-name">TON — @AlexanderLapshakov</div>
+        <div class="wallet-icon">TON</div>
+        <div class="wallet-name">@AlexanderLapshakov</div>
         <div class="wallet-net">TON Network</div>
       </div>
       <div class="wallet-addr" onclick="copyWallet(this,'UQC5hQFuo4QsEIMllGhCuYCCVjv5EzQSuBOwiRA6SYvM0TrO')">UQC5hQFuo4QsEIMllGhCuYCCVjv5EzQSuBOwiRA6SYvM0TrO</div>
       <div class="wallet-copy">нажми чтобы скопировать</div>
     </div>
-    <div class="support-or" id="suppOr">— или —</div>
+    <div class="support-or" id="suppOr">или</div>
     <div class="support-check">
-      <div style="font-size:28px">🧾</div>
-      <div class="support-check-text" id="suppCheck">Кидайте чеки <a class="support-check-link" href="https://t.me/Alexander_Weronka" target="_blank">@Alexander_Weronka</a> или <a class="support-check-link" href="https://t.me/AlexanderLapshakov" target="_blank">@AlexanderLapshakov</a> ❤️</div>
+      <div class="support-check-text" id="suppCheck">
+        Скриншот перевода можно направить в Telegram: <a class="support-check-link" href="https://t.me/Alexander_Weronka" target="_blank" rel="noopener">@Alexander_Weronka</a> или <a class="support-check-link" href="https://t.me/AlexanderLapshakov" target="_blank" rel="noopener">@AlexanderLapshakov</a>
+      </div>
     </div>
   </div>
 </div>
 
 <header>
-  <a class="logo" href="#">
-    <div class="logo-icon" id="logoIcon">🔭</div>
+  <a class="logo" href="welcome.html" title="О проекте">
+    <div class="logo-icon" aria-hidden="true">OA</div>
     OSINT Arsenal
   </a>
   <div class="header-credit">
-    <span id="madeBy">Создано:</span>
+    <span id="madeBy">Сообщество:</span>
     <a href="https://t.me/digitalmole79" target="_blank" rel="noopener">@digitalmole79</a>
   </div>
   <div class="header-actions">
-    <button class="icon-btn" onclick="openSupport()" id="btnSupport">💎 <span id="suppBtnLabel">Поддержка</span></button>
-    <button class="icon-btn" onclick="openSettings()">⚙️ <span id="settBtnLabel">Настройки</span></button>
+    <button type="button" class="icon-btn" onclick="openSupport()">
+      <span id="suppBtnLabel">Поддержка</span>
+    </button>
+    <button type="button" class="icon-btn" onclick="openSettings()">
+      <span id="settBtnLabel">Настройки</span>
+    </button>
   </div>
 </header>
 
-<div class="nav-wrap">
+<nav class="nav-wrap">
   <div class="nav-tabs">
-    <button class="nav-tab active" data-tab="tools" id="tab-tools-btn">🛠️ <span class="tab-text" data-key="navTools">Инструменты</span> <span class="tab-badge" id="toolsCount">20</span></button>
-    <button class="nav-tab" data-tab="tod" id="tab-tod-btn">🎲 <span class="tab-text" data-key="navRandom">Случайный инструмент</span></button>
-    <button class="nav-tab" data-tab="info" id="tab-info-btn">📚 <span class="tab-text" data-key="navInfo">Полезная информация</span></button>
-    <button class="nav-tab" data-tab="practice" id="tab-practice-btn">🎯 <span class="tab-text" data-key="navPractice">Практика</span></button>
-    <button class="nav-tab" data-tab="resources" id="tab-resources-btn">📚 <span class="tab-text" data-key="navResources">Ресурсы</span></button>
-  <!--   <a class="nav-tab" href="./notes.html">📝 <span class="tab-text">Заметки</span></a> -->
+    <button type="button" class="nav-tab active" data-tab="tools">
+      <span class="tab-text" data-key="navTools">Инструменты</span>
+      <span class="tab-badge" id="toolsCount">46</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="tod">
+      <span class="tab-text" data-key="navRandom">Случайный</span>
+      <span class="tab-badge tab-badge-alt" id="randomPoolBadge">345</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="info">
+      <span class="tab-text" data-key="navInfo">База знаний</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="practice">
+      <span class="tab-text" data-key="navPractice">Практика</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="resources">
+      <span class="tab-text" data-key="navResources">Ресурсы</span>
+    </button>
+    <button type="button" class="nav-tab" data-tab="author">
+      <span class="tab-text" data-key="navAuthor">О проекте</span>
+    </button>
   </div>
-</div>
+</nav>
 
-<!-- TAB: TOOLS -->
+<!-- TOOLS -->
 <div class="page active" id="tab-tools">
-  <p class="s-eyebrow">// <span data-key="toolsEye">Коллекция</span></p>
-  <h1 class="s-title" data-key="toolsTitle">OSINT Инструменты</h1>
-  <p class="s-sub" data-key="toolsSub">Подборка инструментов для разведки по открытым источникам.</p>
+  <p class="s-eyebrow"><span data-key="toolsEye">Коллекция</span></p>
+  <h1 class="s-title" data-key="toolsTitle">Арсенал инструментов</h1>
+  <p class="s-sub" data-key="toolsSub">Подборка инструментов для OSINT, разведки и пентеста — от классических до малоизвестных.</p>
   <div class="toolbar">
     <div class="search-wrap">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input class="search-input" id="searchInput" type="text" placeholder="Поиск инструмента...">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+      </svg>
+      <input class="search-input" id="searchInput" type="search" autocomplete="off" placeholder="Поиск инструмента...">
     </div>
-    <div class="pills">
-      <button class="pill active" data-cat="all" data-key="catAll">Все</button>
-      <button class="pill" data-cat="network" data-key="catNet">Сеть</button>
-      <button class="pill" data-cat="social" data-key="catSocial">Соцсети</button>
-      <button class="pill" data-cat="geo" data-key="catGeo">Гео</button>
-      <button class="pill" data-cat="people" data-key="catPeople">Люди</button>
-      <button class="pill" data-cat="email" data-key="catEmail">Email</button>
-      <button class="pill" data-cat="image" data-key="catImage">Изображения</button>
-    </div>
-    <span class="count-chip" id="countLabel">20 инструментов</span>
+    <div class="pills" id="pillsContainer"></div>
+    <span class="count-chip" id="countLabel"></span>
   </div>
   <div class="tools-grid" id="toolsGrid"></div>
 </div>
 
-<!-- TAB: RANDOM TOOL -->
+<!-- RANDOM TOOL -->
 <div class="page" id="tab-tod">
-  <p class="s-eyebrow">// <span data-key="todEye">Рандом</span></p>
-  <h1 class="s-title" data-key="todTitle">Случайный инструмент</h1>
-  <p class="s-sub" data-key="todSub">Каждый раз — малоизвестный OSINT-инструмент с подробным описанием.</p>
+  <p class="s-eyebrow"><span data-key="todEye">Случайный выбор</span></p>
+  <h1 class="s-title" data-key="todTitle">Инструмент дня</h1>
+  <p class="s-sub" data-key="todSub">Каждый раз — запись из расширенной базы с подробным описанием; вкладка «Инструменты» показывает только основной список.</p>
+  <p class="tod-pool-note" id="todPoolNote" aria-live="polite"></p>
   <div class="tod-card">
-    <div class="tod-label"><div class="live-dot"></div><span data-key="todLabel">Случайный выбор</span></div>
+    <div class="tod-label">
+      <div class="live-dot"></div>
+      <span data-key="todLabel">Случайный выбор</span>
+    </div>
     <div class="tod-name" id="todName"><div class="dots"><span></span><span></span><span></span></div></div>
     <div class="tod-url" id="todUrl"></div>
     <div class="tod-desc" id="todDesc"><div class="dots"><span></span><span></span><span></span></div></div>
     <div class="tod-actions">
       <a class="btn-primary" id="todLink" href="#" target="_blank" rel="noopener">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
         <span data-key="btnOpen">Открыть</span>
       </a>
-      <button class="btn-secondary" id="todRefresh">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
-        <span data-key="btnNext">Другой инструмент</span> 🎲
+      <button type="button" class="btn-secondary" id="todRefresh">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+        </svg>
+        <span data-key="btnNext">Другой инструмент</span>
       </button>
     </div>
   </div>
-  <div class="tod-hist-title">// <span data-key="todHistory">Уже показанные</span></div>
+  <div class="tod-hist-title"><span data-key="todHistory">Уже показанные</span></div>
   <div class="tod-hist-list" id="todHistList"></div>
 </div>
 
-<!-- TAB: INFO -->
+<!-- INFO -->
 <div class="page" id="tab-info">
-  <p class="s-eyebrow">// <span data-key="infoEye">База знаний</span></p>
-  <h1 class="s-title" data-key="infoTitle">Полезная информация</h1>
-  <p class="s-sub" data-key="infoSub">Подробные руководства по методам OSINT — от поиска по email до разведки инфраструктуры.</p>
+  <p class="s-eyebrow"><span data-key="infoEye">База знаний</span></p>
+  <h1 class="s-title" data-key="infoTitle">Методики OSINT</h1>
+  <p class="s-sub" data-key="infoSub">Подробные руководства — от поиска по email до разведки инфраструктуры.</p>
   <div id="infoList"></div>
 </div>
 
-<!-- TAB: PRACTICE -->
+<!-- PRACTICE -->
 <div class="page" id="tab-practice">
-  <p class="s-eyebrow">// <span data-key="pracEye">Тренировка</span></p>
-  <h1 class="s-title" data-key="pracTitle">Практика OSINT</h1>
-  <p class="s-sub" data-key="pracSub">Платформы и задания для отработки навыков разведки на реальных или тренировочных данных.</p>
+  <p class="s-eyebrow"><span data-key="pracEye">Тренировка</span></p>
+  <h1 class="s-title" data-key="pracTitle">Практика</h1>
+  <p class="s-sub" data-key="pracSub">Платформы и задания для отработки навыков разведки.</p>
   <div class="practice-grid">
     <a class="pcard" href="https://tryhackme.com" target="_blank" rel="noopener">
-      <div class="pcard-icon" id="mc-tryhackme">🏰</div><div class="pcard-name">TryHackMe</div>
-      <div class="pcard-desc" data-key="pracTHM">Интерактивные комнаты с OSINT-заданиями прямо в браузере. Идеально для старта.</div>
+      <div class="pcard-icon">TH</div>
+      <div class="pcard-name">TryHackMe</div>
+      <div class="pcard-desc" data-key="pracTHM">Интерактивные комнаты с OSINT-заданиями прямо в браузере.</div>
       <div class="pcard-tags"><span class="tag">CTF</span><span class="tag">guided</span></div>
-      <span class="lvl lvl-e">● <span data-key="lvlBeg">Начальный</span></span>
+      <span class="lvl lvl-e">&#9679; <span data-key="lvlBeg">Начальный</span></span>
     </a>
     <a class="pcard" href="https://hackthebox.com" target="_blank" rel="noopener">
-      <div class="pcard-icon" id="mc-htb">📦</div><div class="pcard-name">Hack The Box</div>
-      <div class="pcard-desc" data-key="pracHTB">Реальные машины и OSINT-задачи. Специальный раздел OSINT challenges.</div>
+      <div class="pcard-icon">HT</div>
+      <div class="pcard-name">Hack The Box</div>
+      <div class="pcard-desc" data-key="pracHTB">Реальные машины и OSINT-задачи. Раздел OSINT challenges.</div>
       <div class="pcard-tags"><span class="tag">CTF</span><span class="tag">real</span></div>
-      <span class="lvl lvl-h">● <span data-key="lvlAdv">Продвинутый</span></span>
+      <span class="lvl lvl-h">&#9679; <span data-key="lvlAdv">Продвинутый</span></span>
     </a>
     <a class="pcard" href="https://ctftime.org" target="_blank" rel="noopener">
-      <div class="pcard-icon" id="mc-ctf">⏱️</div><div class="pcard-name">CTFtime</div>
-      <div class="pcard-desc" data-key="pracCTF">Агрегатор CTF-соревнований со всего мира — многие содержат OSINT-треки.</div>
+      <div class="pcard-icon">CF</div>
+      <div class="pcard-name">CTFtime</div>
+      <div class="pcard-desc" data-key="pracCTF">Агрегатор CTF-соревнований со всего мира.</div>
       <div class="pcard-tags"><span class="tag">competitions</span><span class="tag">live</span></div>
-      <span class="lvl lvl-m">● <span data-key="lvlMid">Средний</span></span>
+      <span class="lvl lvl-m">&#9679; <span data-key="lvlMid">Средний</span></span>
     </a>
     <a class="pcard" href="https://www.geoguessr.com" target="_blank" rel="noopener">
-      <div class="pcard-icon" id="mc-geo">🌍</div><div class="pcard-name">GeoGuessr</div>
-      <div class="pcard-desc" data-key="pracGeo">Угадывание мест по Street View — прокачивает геолокационный OSINT.</div>
+      <div class="pcard-icon">GG</div>
+      <div class="pcard-name">GeoGuessr</div>
+      <div class="pcard-desc" data-key="pracGeo">Угадывание мест по Street View — геолокационный OSINT.</div>
       <div class="pcard-tags"><span class="tag">geo</span><span class="tag">visual</span></div>
-      <span class="lvl lvl-e">● <span data-key="lvlBeg">Начальный</span></span>
+      <span class="lvl lvl-e">&#9679; <span data-key="lvlBeg">Начальный</span></span>
     </a>
     <a class="pcard" href="https://www.tracelabs.org" target="_blank" rel="noopener">
-      <div class="pcard-icon" id="mc-trace">🔬</div><div class="pcard-name">Trace Labs</div>
-      <div class="pcard-desc" data-key="pracTrace">OSINT CTF с реальной целью — поиск пропавших без вести. Серьёзный опыт.</div>
+      <div class="pcard-icon">TL</div>
+      <div class="pcard-name">Trace Labs</div>
+      <div class="pcard-desc" data-key="pracTrace">OSINT CTF с реальной целью — поиск пропавших без вести.</div>
       <div class="pcard-tags"><span class="tag">real world</span><span class="tag">CTF</span></div>
-      <span class="lvl lvl-h">● <span data-key="lvlAdv">Продвинутый</span></span>
+      <span class="lvl lvl-h">&#9679; <span data-key="lvlAdv">Продвинутый</span></span>
     </a>
     <a class="pcard" href="https://osint.training" target="_blank" rel="noopener">
-      <div class="pcard-icon" id="mc-training">📖</div><div class="pcard-name">OSINT.Training</div>
-      <div class="pcard-desc" data-key="pracTrain">Курсы и тренировочные задания для OSINT-аналитиков всех уровней.</div>
+      <div class="pcard-icon">OT</div>
+      <div class="pcard-name">OSINT.Training</div>
+      <div class="pcard-desc" data-key="pracTrain">Курсы и тренировочные задания для аналитиков всех уровней.</div>
       <div class="pcard-tags"><span class="tag">course</span><span class="tag">OSINT</span></div>
-      <span class="lvl lvl-m">● <span data-key="lvlMid">Средний</span></span>
+      <span class="lvl lvl-m">&#9679; <span data-key="lvlMid">Средний</span></span>
     </a>
   </div>
-  <div style="margin-bottom:16px">
-    <p class="s-eyebrow">// <span data-key="chalEye">Задания</span></p>
-    <h2 style="font-size:clamp(20px,3vw,28px);font-weight:800;letter-spacing:-.03em;margin-bottom:10px" data-key="chalTitle">Быстрые задания</h2>
+  <div style="margin-bottom:14px">
+    <p class="s-eyebrow"><span data-key="chalEye">Задания</span></p>
+    <h2 style="font-size:clamp(18px,3vw,26px);font-weight:800;letter-spacing:-.03em;margin-bottom:8px" data-key="chalTitle">Быстрые задания</h2>
   </div>
   <div class="chal-card" data-num="01" onclick="openChal(1)">
     <div class="chal-name" data-key="chal1Name">Найди email компании</div>
     <div class="chal-desc" data-key="chal1Desc">Используй Hunter.io и theHarvester чтобы найти email-адреса сотрудников конкретной организации.</div>
-    <div class="chal-foot"><span class="lvl lvl-e">● <span data-key="lvlEasy">Лёгкое</span></span><span class="tag">email • recon</span></div>
+    <div class="chal-foot"><span class="lvl lvl-e">&#9679; <span data-key="lvlEasy">Лёгкое</span></span><span class="tag">email &bull; recon</span></div>
   </div>
   <div class="chal-card" data-num="02" onclick="openChal(2)">
     <div class="chal-name" data-key="chal2Name">Определи геолокацию по фото</div>
     <div class="chal-desc" data-key="chal2Desc">По заданному изображению определи страну, город и улицу — EXIF и визуальные подсказки.</div>
-    <div class="chal-foot"><span class="lvl lvl-m">● <span data-key="lvlMed">Среднее</span></span><span class="tag">geo • image</span></div>
+    <div class="chal-foot"><span class="lvl lvl-m">&#9679; <span data-key="lvlMed">Среднее</span></span><span class="tag">geo &bull; image</span></div>
   </div>
   <div class="chal-card" data-num="03" onclick="openChal(3)">
     <div class="chal-name" data-key="chal3Name">Раскрой инфраструктуру домена</div>
     <div class="chal-desc" data-key="chal3Desc">Найди все поддомены, IP-адреса, открытые порты и технологии целевого домена.</div>
-    <div class="chal-foot"><span class="lvl lvl-h">● <span data-key="lvlHard">Сложное</span></span><span class="tag">network • dns</span></div>
+    <div class="chal-foot"><span class="lvl lvl-h">&#9679; <span data-key="lvlHard">Сложное</span></span><span class="tag">network &bull; dns</span></div>
   </div>
 </div>
 
-<!-- TAB: RESOURCES -->
+<!-- RESOURCES -->
 <div class="page" id="tab-resources">
-  <p class="s-eyebrow">// <span data-key="resEye">Библиотека</span></p>
+  <p class="s-eyebrow"><span data-key="resEye">Библиотека</span></p>
   <h1 class="s-title" data-key="resTitle">Ресурсы</h1>
-  <p class="s-sub" data-key="resSub">Книги, каналы, подкасты и сообщества для изучения OSINT.</p>
+  <p class="s-sub" data-key="resSub">Каналы, книги, подкасты и сообщества для изучения OSINT.</p>
   <div class="res-grid">
     <a class="rcard" href="https://t.me/osint_mindset" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon" id="mc-mindset">✈️</div><div><div class="rcard-name">OSINT Mindset</div><div class="rcard-type">Telegram</div></div></div>
-      <div class="rcard-desc" data-key="resMindset">Актуальные инструменты, кейсы и методики от практикующих специалистов.</div>
+      <div class="rcard-top"><div class="rcard-icon">OM</div><div><div class="rcard-name">OSINT Mindset</div><div class="rcard-type">Telegram</div></div></div>
+      <div class="rcard-desc" data-key="resMindset">Актуальные инструменты, кейсы и методики.</div>
       <span class="rcard-badge">Telegram</span>
     </a>
     <a class="rcard" href="https://www.bellingcat.com" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon" id="mc-bell">🔔</div><div><div class="rcard-name">Bellingcat</div><div class="rcard-type">Media</div></div></div>
-      <div class="rcard-desc" data-key="resBell">Знаменитое следственное издание. Расследования и обучающие материалы.</div>
+      <div class="rcard-top"><div class="rcard-icon">BC</div><div><div class="rcard-name">Bellingcat</div><div class="rcard-type">Media</div></div></div>
+      <div class="rcard-desc" data-key="resBell">Знаменитое следственное издание. Расследования и обучение.</div>
       <span class="rcard-badge">Web</span>
     </a>
     <a class="rcard" href="https://github.com/jivoi/awesome-osint" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon" id="mc-awesome">⭐</div><div><div class="rcard-name">Awesome OSINT</div><div class="rcard-type">GitHub</div></div></div>
-      <div class="rcard-desc" data-key="resAwesome">Огромный список OSINT-ресурсов, инструментов и методик на GitHub.</div>
+      <div class="rcard-top"><div class="rcard-icon">AW</div><div><div class="rcard-name">Awesome OSINT</div><div class="rcard-type">GitHub</div></div></div>
+      <div class="rcard-desc" data-key="resAwesome">Огромный список OSINT-ресурсов и инструментов.</div>
       <span class="rcard-badge">GitHub</span>
     </a>
     <a class="rcard" href="https://osintframework.com" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">🌐</div><div><div class="rcard-name">OSINT Framework</div><div class="rcard-type">Web</div></div></div>
-      <div class="rcard-desc" data-key="resOsintFramework"></div>
+      <div class="rcard-top"><div class="rcard-icon">OF</div><div><div class="rcard-name">OSINT Framework</div><div class="rcard-type">Web</div></div></div>
+      <div class="rcard-desc" data-key="resOsintFramework">Интерактивная карта всех OSINT-инструментов по категориям.</div>
       <span class="rcard-badge">Web</span>
     </a>
     <a class="rcard" href="https://www.youtube.com/@nahamsec" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">🎥</div><div><div class="rcard-name">NahamSec</div><div class="rcard-type">YouTube</div></div></div>
-      <div class="rcard-desc" data-key="resNahamSec"></div>
+      <div class="rcard-top"><div class="rcard-icon">NS</div><div><div class="rcard-name">NahamSec</div><div class="rcard-type">YouTube</div></div></div>
+      <div class="rcard-desc" data-key="resNahamSec">YouTube-канал багхантера. Видео по recon и bug bounty.</div>
       <span class="rcard-badge">YouTube</span>
     </a>
     <a class="rcard" href="https://inteltechniques.com/podcast.html" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">🎙️</div><div><div class="rcard-name">The OSINT Podcast</div><div class="rcard-type">Podcast</div></div></div>
-      <div class="rcard-desc" data-key="resOsintPodcast"></div>
+      <div class="rcard-top"><div class="rcard-icon">IP</div><div><div class="rcard-name">The OSINT Podcast</div><div class="rcard-type">Podcast</div></div></div>
+      <div class="rcard-desc" data-key="resOsintPodcast">Подкаст Майкла Баззела. Техники, инструменты, кейсы.</div>
       <span class="rcard-badge">Podcast</span>
     </a>
     <a class="rcard" href="https://github.com/sinwindie/OSINT" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">📋</div><div><div class="rcard-name">OSINT Checklists</div><div class="rcard-type">GitHub</div></div></div>
-      <div class="rcard-desc" data-key="resChecklists"></div>
+      <div class="rcard-top"><div class="rcard-icon">CL</div><div><div class="rcard-name">OSINT Checklists</div><div class="rcard-type">GitHub</div></div></div>
+      <div class="rcard-desc" data-key="resChecklists">Чек-листы для OSINT-расследований разных типов.</div>
       <span class="rcard-badge">GitHub</span>
-    </a>
-    <a class="rcard" href="https://www.youtube.com/@malikchohra" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">📡</div><div><div class="rcard-name">OSINT Curious</div><div class="rcard-type">YouTube</div></div></div>
-      <div class="rcard-desc" data-key="resOsintCurious"></div>
-      <span class="rcard-badge">YouTube</span>
-    </a>
-    <a class="rcard" href="https://github.com/ozguralp/gmapsapiscanner" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">🔑</div><div><div class="rcard-name">API Key Leaks Guide</div><div class="rcard-type">GitHub</div></div></div>
-      <div class="rcard-desc" data-key="resApiLeaks"></div>
-      <span class="rcard-badge">GitHub</span>
-    </a>
-    <a class="rcard" href="https://t.me/osint_team" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">💬</div><div><div class="rcard-name">OSINT Team</div><div class="rcard-type">Telegram</div></div></div>
-      <div class="rcard-desc" data-key="resOsintTeam"></div>
-      <span class="rcard-badge">Telegram</span>
     </a>
     <a class="rcard" href="https://book.hacktricks.xyz" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">📖</div><div><div class="rcard-name">HackTricks</div><div class="rcard-type">Book / Web</div></div></div>
-      <div class="rcard-desc" data-key="resHackTricks"></div>
+      <div class="rcard-top"><div class="rcard-icon">HT</div><div><div class="rcard-name">HackTricks</div><div class="rcard-type">Book / Web</div></div></div>
+      <div class="rcard-desc" data-key="resHackTricks">Энциклопедия хакерских техник и методологий.</div>
       <span class="rcard-badge">Web</span>
     </a>
     <a class="rcard" href="https://github.com/swisskyrepo/PayloadsAllTheThings" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">💣</div><div><div class="rcard-name">PayloadsAllTheThings</div><div class="rcard-type">GitHub</div></div></div>
-      <div class="rcard-desc" data-key="resPayloads"></div>
+      <div class="rcard-top"><div class="rcard-icon">PT</div><div><div class="rcard-name">PayloadsAllTheThings</div><div class="rcard-type">GitHub</div></div></div>
+      <div class="rcard-desc" data-key="resPayloads">Самая полная коллекция полезных нагрузок и техник обхода.</div>
       <span class="rcard-badge">GitHub</span>
     </a>
     <a class="rcard" href="https://reddit.com/r/OSINT" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">🟠</div><div><div class="rcard-name">r/OSINT</div><div class="rcard-type">Community</div></div></div>
-      <div class="rcard-desc" data-key="resRedditOsint"></div>
+      <div class="rcard-top"><div class="rcard-icon">RO</div><div><div class="rcard-name">r/OSINT</div><div class="rcard-type">Community</div></div></div>
+      <div class="rcard-desc" data-key="resRedditOsint">Сообщество Reddit для OSINT-энтузиастов.</div>
       <span class="rcard-badge">Reddit</span>
     </a>
     <a class="rcard" href="https://www.tracelabs.org" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">🕵️</div><div><div class="rcard-name">Trace Labs</div><div class="rcard-type">Community</div></div></div>
-      <div class="rcard-desc" data-key="resTraceLabs"></div>
+      <div class="rcard-top"><div class="rcard-icon">TL</div><div><div class="rcard-name">Trace Labs</div><div class="rcard-type">Community</div></div></div>
+      <div class="rcard-desc" data-key="resTraceLabs">НКО использующая OSINT для поиска пропавших. CTF с реальными целями.</div>
       <span class="rcard-badge">NGO</span>
     </a>
     <a class="rcard" href="https://github.com/cipher387/osint_stuff_tool_collection" target="_blank" rel="noopener">
-      <div class="rcard-top"><div class="rcard-icon">🧩</div><div><div class="rcard-name">OSINT Stuff Collection</div><div class="rcard-type">GitHub</div></div></div>
-      <div class="rcard-desc" data-key="resOsintStuff"></div>
+      <div class="rcard-top"><div class="rcard-icon">C3</div><div><div class="rcard-name">OSINT Stuff Collection</div><div class="rcard-type">GitHub</div></div></div>
+      <div class="rcard-desc" data-key="resOsintStuff">Масштабная коллекция OSINT-инструментов от Cipher387.</div>
       <span class="rcard-badge">GitHub</span>
     </a>
+  </div>
+</div>
+
+<!-- AUTHOR -->
+<div class="page" id="tab-author">
+  <p class="s-eyebrow"><span data-key="authorEye">Проект</span></p>
+  <h1 class="s-title" data-key="authorTitle">О проекте</h1>
+  <p class="s-sub" data-key="authorSub">Канал digitalmole79, авторы и контакты.</p>
+
+  <div class="author-layout">
+    <div>
+      <div class="author-card">
+        <div class="author-avatar" aria-hidden="true">dm</div>
+        <div class="author-name">digitalmole79</div>
+        <div class="author-handle">сообщество и канал</div>
+        <div class="author-bio" data-key="authorBioDm1">
+          <strong>digitalmole79</strong> — канал и площадка для энтузиастов, которым интересны информационная безопасность, пентест, OSINT и всё, что рядом: разборы, дискуссии, практика без лишнего шума. Канал ведётся стабильно — <a class="inline-link" href="https://t.me/digitalmole79" target="_blank" rel="noopener">Telegram</a>, ссылка-переход: <a class="inline-link" href="https://t.me/digitalmole79" target="_blank" rel="noopener">t.me/digitalmole79</a>.
+        </div>
+        <div class="author-bio" style="margin-top:12px" data-key="authorBioDm2">
+          Каталог <strong>OSINT Arsenal</strong> — удобная точка входа: инструменты, методики, ресурсы и практика. Предложения и баги лучше писать в Telegram одному из авторов.
+        </div>
+        <div class="author-links">
+          <a class="author-link" href="https://t.me/digitalmole79" target="_blank" rel="noopener">
+            <span class="author-link-label">Канал в Telegram</span>
+            <span class="author-link-url">t.me/digitalmole79</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="author-info-panel">
+      <div class="info-block">
+        <div class="info-block-title" data-key="authorStatsTitle">Статистика</div>
+        <div class="stat-row">
+          <div class="stat-item">
+            <div class="stat-num" id="statCatalog">46</div>
+            <div class="stat-label" data-key="statLabelCatalog">в каталоге</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statDb">345</div>
+            <div class="stat-label" data-key="statLabelDb">в пуле «случайный»</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statCats">8</div>
+            <div class="stat-label" data-key="statLabelCats">категорий</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" id="statTopics">9</div>
+            <div class="stat-label" data-key="statLabelTopics">методик в базе</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-title">Авторы</div>
+        <div class="info-block-text author-people" data-key="authorPeopleHtml">
+          <p><strong>Alexander Weronka</strong> — соавтор проекта. Связь в Telegram: <a class="inline-link" href="https://t.me/Alexander_Weronka" target="_blank" rel="noopener">@Alexander_Weronka</a></p>
+          <p><strong>Alexander Lapshakov</strong> — соавтор проекта. Telegram: <a class="inline-link" href="https://t.me/AlexanderLapshakov" target="_blank" rel="noopener">@AlexanderLapshakov</a>. Короткие видео: <a class="inline-link" href="https://www.tiktok.com/@alexanderlpsh?_r=1&_t=ZS-95332MCRK6R" target="_blank" rel="noopener">TikTok @alexanderlpsh</a></p>
+          <p>Обратная связь по инструментам и интерфейсу — в личку в Telegram.</p>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-title">О каталоге</div>
+        <div class="info-block-text" data-key="authorAboutHtml">
+          <p><strong>OSINT Arsenal</strong> — каталог инструментов для разведки по открытым источникам, пентеста и цифровой криминалистики. Задача — одна точка входа: отфильтровать шум и оставить то, с чем реально работают.</p>
+          <p>Материалы подходят тем, кто только начинает, и тем, кто уже делает разведку или тесты по согласованию — важно помнить про законность и этику.</p>
+        </div>
+      </div>
+
+      <div class="info-block">
+        <div class="info-block-title">Темы</div>
+        <div class="tag-cloud">
+          <span class="tag-cloud-item">OSINT</span>
+          <span class="tag-cloud-item">Разведка</span>
+          <span class="tag-cloud-item">Пентест</span>
+          <span class="tag-cloud-item">Форензика</span>
+          <span class="tag-cloud-item">Реверс-инжиниринг</span>
+          <span class="tag-cloud-item">Geolocation</span>
+          <span class="tag-cloud-item">Social Media</span>
+          <span class="tag-cloud-item">Email OSINT</span>
+          <span class="tag-cloud-item">Network Recon</span>
+          <span class="tag-cloud-item">CTF</span>
+          <span class="tag-cloud-item">Bug Bounty</span>
+          <span class="tag-cloud-item">Metadata</span>
+          <span class="tag-cloud-item">DNS</span>
+          <span class="tag-cloud-item">Криптовалюты</span>
+          <span class="tag-cloud-item">Darkweb</span>
+        </div>
+      </div>
+
+      <div class="info-block info-block-warn">
+        <div class="info-block-title info-block-title-warn">Ответственность</div>
+        <div class="info-block-text small-print" data-key="disclaimerHtml">
+          <p>Все инструменты перечислены в <strong>учебных и легитимных целях</strong>: авторизованное тестирование, исследование безопасности, учёба и защита своих систем. Использование вне рамок закона — ваша зона ответственности; авторы не участвуют в таких сценариях.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -397,19 +494,26 @@
   <div class="modal">
     <div class="modal-head">
       <div class="modal-title" id="modalTitle"></div>
-      <button class="modal-close" id="modalClose">✕</button>
+      <button type="button" class="modal-close" id="modalClose" aria-label="Закрыть">&times;</button>
     </div>
     <div class="modal-url" id="modalUrl"></div>
     <div class="modal-tags" id="modalTags"></div>
     <div class="modal-desc" id="modalDesc"></div>
     <a class="modal-open" id="modalLink" href="#" target="_blank" rel="noopener">
       <span data-key="btnOpen">Открыть</span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+        <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
     </a>
   </div>
 </div>
 
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/tools.js"></script>
+<script src="assets/js/info-topics.js"></script>
 <script src="assets/js/tools-db.js"></script>
 <script src="assets/js/app.js"></script>
+
 </body>
 </html>
