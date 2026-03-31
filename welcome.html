@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="OSINT Arsenal — каталог инструментов OSINT, база методик, практика и ресурсы.">
+<title>OSINT Arsenal — о проекте</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Onest:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<main class="welcome-page">
+  <div class="welcome-head">
+    <div class="welcome-logo" aria-hidden="true">OA</div>
+    <div>
+      <div class="welcome-title">OSINT Arsenal</div>
+      <div style="font-size:12px;padding-top:4px;font-family:'Space Mono',monospace;color:var(--accent)" id="wSubLine">каталог инструментов и методик</div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-bottom:4px">
+    <button onclick="wLang('ru')" id="wBtnRu" style="font-family:'Space Mono',monospace;font-size:10px;padding:5px 14px;border-radius:20px;border:1px solid var(--accent);background:var(--accent-dim);color:var(--accent);cursor:pointer;letter-spacing:.06em;transition:all .2s">RU</button>
+    <button onclick="wLang('en')" id="wBtnEn" style="font-family:'Space Mono',monospace;font-size:10px;padding:5px 14px;border-radius:20px;border:1px solid var(--border2);background:transparent;color:var(--text-sub);cursor:pointer;letter-spacing:.06em;transition:all .2s">EN</button>
+  </div>
+
+  <div class="welcome-lead" id="wLead">
+    <p>Одностраничный каталог: инструменты с фильтрами и поиском, «случайный инструмент» из расширенной базы, база знаний с методиками, блок практики и подборка ресурсов. Интерфейс переключается между русским и английским.</p>
+    <p>Сообщество <strong>digitalmole79</strong> в Telegram объединяет тех, кому интересны информационная безопасность, пентест и OSINT.</p>
+  </div>
+
+  <div class="welcome-actions">
+    <a class="welcome-btn-primary" href="index.html#tools" id="wBtnCatalog">Открыть каталог</a>
+    <a class="welcome-btn-secondary" href="index.html#author" id="wBtnAbout">О проекте и контакты</a>
+  </div>
+
+  <p class="welcome-section-title" id="wSecSections">Разделы приложения</p>
+  <div class="welcome-links">
+    <div class="welcome-link-row">
+      <span id="wL1">Каталог инструментов</span>
+      <a href="index.html#tools" id="wO1">Открыть</a>
+    </div>
+    <div class="welcome-link-row">
+      <span id="wL2">Случайный инструмент</span>
+      <a href="index.html#tod" id="wO2">Открыть</a>
+    </div>
+    <div class="welcome-link-row">
+      <span id="wL3">База знаний</span>
+      <a href="index.html#info" id="wO3">Открыть</a>
+    </div>
+    <div class="welcome-link-row">
+      <span id="wL4">Практика и задания</span>
+      <a href="index.html#practice" id="wO4">Открыть</a>
+    </div>
+    <div class="welcome-link-row">
+      <span id="wL5">Справочные ресурсы</span>
+      <a href="index.html#resources" id="wO5">Открыть</a>
+    </div>
+    <div class="welcome-link-row">
+      <span id="wL6">О проекте и контакты</span>
+      <a href="index.html#author" id="wO6">Открыть</a>
+    </div>
+  </div>
+
+  <p class="welcome-section-title" id="wSecContacts" style="margin-top:28px">Контакты и сообщество</p>
+  <div class="welcome-links">
+    <div class="welcome-link-row">
+      <span>digitalmole79</span>
+      <a href="https://t.me/digitalmole79" target="_blank" rel="noopener">Telegram</a>
+    </div>
+    <div class="welcome-link-row">
+      <span>Alexander Weronka</span>
+      <a href="https://t.me/Alexander_Weronka" target="_blank" rel="noopener">@Alexander_Weronka</a>
+    </div>
+    <div class="welcome-link-row">
+      <span>Alexander Lapshakov</span>
+      <a href="https://t.me/AlexanderLapshakov" target="_blank" rel="noopener">@AlexanderLapshakov</a>
+    </div>
+    <div class="welcome-link-row">
+      <span>TikTok</span>
+      <a href="https://www.tiktok.com/@alexanderlpsh?_r=1&_t=ZS-95332MCRK6R" target="_blank" rel="noopener">@alexanderlpsh</a>
+    </div>
+  </div>
+
+  <p class="welcome-note" id="wNote">
+    Материалы сайта предназначены для законного обучения и исследований. Инструменты из списка не должны использоваться для несанкционированного доступа к чужим данным или системам.
+  </p>
+</main>
+
+<script>
+const wT = {
+  ru: {
+    sub:'каталог инструментов и методик',
+    lead:'<p>Одностраничный каталог: инструменты с фильтрами и поиском, «случайный инструмент» из расширенной базы, база знаний с методиками, блок практики и подборка ресурсов. Интерфейс переключается между русским и английским.</p><p>Сообщество <strong>digitalmole79</strong> в Telegram объединяет тех, кому интересны информационная безопасность, пентест и OSINT.</p>',
+    btnCatalog:'Открыть каталог', btnAbout:'О проекте и контакты',
+    secSections:'Разделы приложения', secContacts:'Контакты и сообщество',
+    l1:'Каталог инструментов',l2:'Случайный инструмент',l3:'База знаний',
+    l4:'Практика и задания',l5:'Справочные ресурсы',l6:'О проекте и контакты',
+    o:'Открыть',
+    note:'Материалы сайта предназначены для законного обучения и исследований. Инструменты из списка не должны использоваться для несанкционированного доступа к чужим данным или системам.'
+  },
+  en: {
+    sub:'tool catalog and methodologies',
+    lead:'<p>A single-page catalog: tools with filters and search, a random tool picker from an extended pool, a knowledge base with methodology guides, a practice section, and a curated resource library. The interface supports Russian and English.</p><p>The <strong>digitalmole79</strong> Telegram community brings together people interested in infosec, pentesting and OSINT.</p>',
+    btnCatalog:'Open catalog', btnAbout:'About & contacts',
+    secSections:'App sections', secContacts:'Contacts & community',
+    l1:'Tool catalog',l2:'Random tool',l3:'Knowledge base',
+    l4:'Practice & challenges',l5:'Reference resources',l6:'About & contacts',
+    o:'Open',
+    note:'All materials are for lawful learning and research only. Tools listed here must not be used for unauthorized access to third-party data or systems.'
+  }
+};
+
+function wLang(lang) {
+  const t = wT[lang];
+  document.getElementById('wSubLine').textContent = t.sub;
+  document.getElementById('wLead').innerHTML = t.lead;
+  document.getElementById('wBtnCatalog').textContent = t.btnCatalog;
+  document.getElementById('wBtnAbout').textContent = t.btnAbout;
+  document.getElementById('wSecSections').textContent = t.secSections;
+  document.getElementById('wSecContacts').textContent = t.secContacts;
+  ['1','2','3','4','5','6'].forEach(n => {
+    document.getElementById('wL'+n).textContent = t['l'+n];
+    document.getElementById('wO'+n).textContent = t.o;
+  });
+  document.getElementById('wNote').textContent = t.note;
+  const isRu = lang === 'ru';
+  const btnRu = document.getElementById('wBtnRu');
+  const btnEn = document.getElementById('wBtnEn');
+  btnRu.style.background = isRu ? 'var(--accent-dim)' : 'transparent';
+  btnRu.style.color = isRu ? 'var(--accent)' : 'var(--text-sub)';
+  btnRu.style.borderColor = isRu ? 'var(--accent)' : 'var(--border2)';
+  btnEn.style.background = !isRu ? 'var(--accent-dim)' : 'transparent';
+  btnEn.style.color = !isRu ? 'var(--accent)' : 'var(--text-sub)';
+  btnEn.style.borderColor = !isRu ? 'var(--accent)' : 'var(--border2)';
+  localStorage.setItem('oa_lang', lang);
+}
+
+const saved = localStorage.getItem('oa_lang');
+if (saved && wT[saved]) wLang(saved);
+</script>
+</body>
+</html>
