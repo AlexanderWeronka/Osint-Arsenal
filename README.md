@@ -14,16 +14,6 @@
 
 ---
 
-## С чего начать / Getting started
-
-1. Открой **`welcome.html`** — короткое описание проекта и ссылки на разделы.
-2. Основное приложение — **`index.html`**: после выбора языка доступны вкладки (инструменты, случайный выбор, база знаний, практика, ресурсы, о проекте).
-
-Прямые ссылки на разделы работают через якорь: `index.html#tools`, `index.html#author` и т.д.
-
-*Open **`welcome.html`** for a short overview and section links. The main app is **`index.html`** — pick a language, then navigate tabs. Direct links work via hash anchors: `index.html#tools`, `index.html#author`, etc.*
-
----
 
 ## Структура / Structure
 
